@@ -1,0 +1,25 @@
+FROM docker.io/centos
+MAINTAINER fxl0206@gmail.com
+USER root
+RUN yum -y install expect openssh-server git tar wget make gcc gcc-c++ kernel-devel m4 ncurses-devel openssl-devel 
+RUN wget -q -O - http://123.56.90.92:81/otp_src_17.4.tar.gz | tar -xzf - -C /opt && cd /opt/otp_src_17.4 && ./configure --prefix=/usr/local/erlang --with-ssl --enable-threads --enable-smp-support --enable-kernel-poll --enable-hipe --without-javac && make && make install && make clean
+RUN echo "export PATH=$PATH:/usr/local/erlang/bin" > /etc/profile && mkdir /app && rm -rf /opt/otp_src_17.4 && git clone https://github.com/fxl0206/greybird /app/greybird && mkdir -p /app/greybird/_rel && mkdir -p /app/greybird/deps && useradd admin  && echo "admin:286955" | chpasswd && echo "admin   ALL=(ALL)       ALL" >> /etc/sudoers && ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key && ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key && mkdir /var/run/sshd
+
+#添加初始化脚本到镜像
+ADD init.sh /init.sh
+ADD start.sh /start.sh
+RUN yum -y install passwd
+RUN /init.sh
+
+#RUN wget -q -O - http://123.56.90.92:81/otp_src_17.4.tar.gz | tar -xzf - -C /opt
+
+#WORKDIR /opt/zookeeper
+VOLUME ["/app/greybird","/etc"]
+   
+# 添加测试用户admin，密码admin，并且将此用户添加到sudoers里  
+
+   
+# 启动sshd服务并且暴露22端口  
+EXPOSE 22
+ENTRYPOINT ["/bin/sh","-c","'/start.sh'"]
+#CMD ["/usr/sbin/sshd", "-D"]  

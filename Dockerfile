@@ -5,13 +5,13 @@ MAINTAINER fxl0206@gmail.com
 USER root
 
 #初始化zookeeper环境
-RUN yum -y install passwd expect net-tools java ssh-keygen tar wget&& wget -q -O - http://mirrors.cnnic.cn/apache/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz | tar -xzf - -C /opt && mv /opt/zookeeper-3.4.6 /opt/zookeeper && cp /opt/zookeeper/conf/zoo_sample.cfg /opt/zookeeper/conf/zoo.cfg && mkdir -p /opt/zookeeper/data && mkdir -p /opt/zookeeper/log && mkdir -p /tmp/zookeeper
+RUN yum -y install passwd expect net-tools java ssh-keygen tar wget&& wget -q -O - http://mirrors.cnnic.cn/apache/zookeeper/zookeeper-3.3.6/zookeeper-3.3.6.tar.gz | tar -xzf - -C /opt && mv /opt/zookeeper-3.3.6 /opt/zookeeper && cp /opt/zookeeper/conf/zoo_sample.cfg /opt/zookeeper/conf/zoo.cfg && mkdir -p /opt/zookeeper/data && mkdir -p /opt/zookeeper/log && mkdir -p /tmp/zookeeper
 
 #RUN echo "server.1=$HOST1:2888:3888" >> /opt/zookeeper/conf/zoo.cfg && echo "server.2=$HOST2:2888:3888" >> /opt/zookeeper/conf/zoo.cfg && echo "server.3=$HOST3:2888:3888" >> /opt/zookeeper/conf/zoo.cfg && mkdir -p /tmp/zookeeper && echo $SERVERID > /tmp/zookeeper/myid
 
 #添加初始化脚本到镜像
-ADD init.sh /init.sh
-ADD start.sh /start.sh
+ADD include/init.sh /init.sh
+ADD include/start.sh /start.sh
 RUN /init.sh
 
 #设定登陆初始目录

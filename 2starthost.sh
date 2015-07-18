@@ -2,9 +2,11 @@
 NAT_IP=$1
 LAN_IP=$2
 NAME=$3
+PORT1=$4
+PORT2=$5
 echo $NAT_IP $LAN_IP $NAME
 
-docker run -d --name=$NAME -p $NAT_IP:22:22 -p $NAT_IP:2181:2181 zk:2
+docker run -d --name=$NAME -h asfhost -p $NAT_IP:$PORT1:22 -p $NAT_IP:$PORT2:2181 zk:asf
 
 PID=`docker inspect --format="{{ .State.Pid }}" $NAME`
 
