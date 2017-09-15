@@ -1,0 +1,7 @@
+./2starthost.sh 17.6.2.2 172.17.0.11 zk-node1 2211 2181
+./2starthost.sh 17.6.2.2 172.17.0.12 zk-node2 2212 2182
+./2starthost.sh 17.6.2.2 172.17.0.13 zk-node3 2213 2183
+
+./3startzk.sh 172.17.0.11 1
+./3startzk.sh 172.17.0.12 2
+./3startzk.sh 172.17.0.13 3
